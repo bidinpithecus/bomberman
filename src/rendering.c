@@ -69,7 +69,7 @@ void drawPlayer(Player player) {
 
 void glutStart() {
   glutInit(&argc, argv);
-  glutTimerFunc(100, updateBombTimers, 0);
+  //glutTimerFunc(100, updateBombTimers, 0);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
   glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
   glutCreateWindow("Bomberman");

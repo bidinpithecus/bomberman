@@ -193,37 +193,109 @@ bool isPositionAnOpenCell(Coord position) {
 // Fix hitbox -- Done (maybe)
 bool canPlayerWalkThroughBomb(Player player, Coord new_position) {
     int offset = 1;
-    Coord cell_top_left;
-    cell_top_left.x = (new_position.x - (int)HALF_PLAYER_SIZE) / CELL_SIZE;
-    cell_top_left.y = (new_position.y - (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+    Coord outer_cell_top_left;
+    outer_cell_top_left.x = (new_position.x - (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+    outer_cell_top_left.y = (new_position.y - (int)HALF_PLAYER_SIZE) / CELL_SIZE;
 
-    Coord cell_bottom_right;
-    cell_bottom_right.x = (new_position.x - offset + (int)HALF_PLAYER_SIZE) / CELL_SIZE;
-    cell_bottom_right.y = (new_position.y - offset + (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+    Coord outer_cell_bottom_right;
+    outer_cell_bottom_right.x = (new_position.x - offset + (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+    outer_cell_bottom_right.y = (new_position.y - offset + (int)HALF_PLAYER_SIZE) / CELL_SIZE;
 
-    Coord cell_top_right;
-    cell_top_right.x = cell_bottom_right.x;
-    cell_top_right.y = cell_top_left.y;
+    Coord outer_cell_top_right;
+    outer_cell_top_right.x = outer_cell_bottom_right.x;
+    outer_cell_top_right.y = outer_cell_top_left.y;
 
-    Coord cell_bottom_left;
-    cell_bottom_left.x = cell_top_left.x;
-    cell_bottom_left.y = cell_bottom_right.y;
+    Coord outer_cell_bottom_left;
+    outer_cell_bottom_left.x = outer_cell_top_left.x;
+    outer_cell_bottom_left.y = outer_cell_bottom_right.y;
 
-    bool top_left_is_own_bomb = (arena[cell_top_left.y][cell_top_left.x] == NEW_BOMB && isBombPlantedByPlayer(cell_top_left, player.id));
-    bool bottom_right_is_own_bomb = (arena[cell_bottom_right.y][cell_bottom_right.x] == NEW_BOMB && isBombPlantedByPlayer(cell_bottom_right, player.id));
-    bool top_right_is_own_bomb = (arena[cell_top_right.y][cell_top_right.x] == NEW_BOMB && isBombPlantedByPlayer(cell_top_right, player.id));
-    bool bottom_left_is_own_bomb = (arena[cell_bottom_left.y][cell_bottom_left.x] == NEW_BOMB && isBombPlantedByPlayer(cell_bottom_left, player.id));
+    int outer_cell_top_left_arena = arena[outer_cell_top_left.y][outer_cell_top_left.x];
+    int outer_cell_bottom_right_arena = arena[outer_cell_bottom_right.y][outer_cell_bottom_right.x];
+    int outer_cell_top_right_arena = arena[outer_cell_top_right.y][outer_cell_top_right.x];
+    int outer_cell_bottom_left_arena = arena[outer_cell_bottom_left.y][outer_cell_bottom_left.x];
 
-    bool top_left_is_open = (arena[cell_top_left.y][cell_top_left.x] == OPENED);
-    bool bottom_right_is_open = (arena[cell_bottom_right.y][cell_bottom_right.x] == OPENED);
-    bool bottom_left_is_open = (arena[cell_bottom_left.y][cell_bottom_left.x] == OPENED);
-    bool top_right_is_open = (arena[cell_top_right.y][cell_top_right.x] == OPENED);
+    printf("outer_cell_top_left: (%d, %d) -> %d\n", outer_cell_top_left.x, outer_cell_top_left.y, arena[outer_cell_top_left.y][outer_cell_top_left.x]);
+    printf("outer_cell_bottom_right: (%d, %d) -> %d\n", outer_cell_bottom_right.x, outer_cell_bottom_right.y, arena[outer_cell_bottom_right.y][outer_cell_bottom_right.x]);
+    printf("outer_cell_top_right: (%d, %d) -> %d\n", outer_cell_top_right.x, outer_cell_top_right.y, arena[outer_cell_top_right.y][outer_cell_top_right.x]);
+    printf("outer_cell_bottom_left: (%d, %d) -> %d\n", outer_cell_bottom_left.x, outer_cell_bottom_left.y, arena[outer_cell_bottom_left.y][outer_cell_bottom_left.x]);
 
-    bool top_left_bottom_right_collision = (top_left_is_own_bomb && bottom_right_is_open) || (bottom_right_is_own_bomb && top_left_is_open) || (top_left_is_own_bomb && bottom_right_is_own_bomb);
+    Coord inner_cell_top_left;
+    inner_cell_top_left.x = (new_position.x + SPEED - (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+    inner_cell_top_left.y = (new_position.y + SPEED - (int)HALF_PLAYER_SIZE) / CELL_SIZE;
 
-    bool top_right_bottom_left_collision = (top_right_is_own_bomb && bottom_left_is_open) || (bottom_left_is_own_bomb && top_right_is_open) || (top_right_is_own_bomb && bottom_left_is_own_bomb);
+    Coord inner_cell_bottom_right;
+    inner_cell_bottom_right.x = (new_position.x - offset - SPEED + (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+    inner_cell_bottom_right.y = (new_position.y - offset - SPEED + (int)HALF_PLAYER_SIZE) / CELL_SIZE;
 
-    return top_left_bottom_right_collision && top_right_bottom_left_collision;
+    Coord inner_cell_top_right;
+    inner_cell_top_right.x = inner_cell_bottom_right.x;
+    inner_cell_top_right.y = inner_cell_top_left.y;
+
+    Coord inner_cell_bottom_left;
+    inner_cell_bottom_left.x = inner_cell_top_left.x;
+    inner_cell_bottom_left.y = inner_cell_bottom_right.y;
+
+    int inner_cell_top_left_arena = arena[inner_cell_top_left.y][inner_cell_top_left.x];
+    int inner_cell_bottom_right_arena = arena[inner_cell_bottom_right.y][inner_cell_bottom_right.x];
+    int inner_cell_top_right_arena = arena[inner_cell_top_right.y][inner_cell_top_right.x];
+    int inner_cell_bottom_left_arena = arena[inner_cell_bottom_left.y][inner_cell_bottom_left.x];
+
+    printf("\n");
+
+    printf("inner_cell_top_left: (%d, %d) -> %d\n", inner_cell_top_left.x, inner_cell_top_left.y, inner_cell_top_left_arena);
+    printf("inner_cell_bottom_right: (%d, %d) -> %d\n", inner_cell_bottom_right.x, inner_cell_bottom_right.y, inner_cell_bottom_right_arena);
+    printf("inner_cell_top_right: (%d, %d) -> %d\n", inner_cell_top_right.x, inner_cell_top_right.y, inner_cell_top_right_arena);
+    printf("inner_cell_bottom_left: (%d, %d) -> %d\n", inner_cell_bottom_left.x, inner_cell_bottom_left.y, inner_cell_bottom_left_arena);
+
+    printf("\n\n");
+
+    Coord current_cell_top_left;
+    current_cell_top_left.x = (player.position.x - (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+    current_cell_top_left.y = (player.position.y - (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+
+    Coord current_cell_bottom_right;
+    current_cell_bottom_right.x = (player.position.x - offset + (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+    current_cell_bottom_right.y = (player.position.y - offset + (int)HALF_PLAYER_SIZE) / CELL_SIZE;
+
+    Coord current_cell_top_right;
+    current_cell_top_right.x = current_cell_bottom_right.x;
+    current_cell_top_right.y = current_cell_top_left.y;
+
+    Coord current_cell_bottom_left;
+    current_cell_bottom_left.x = current_cell_top_left.x;
+    current_cell_bottom_left.y = current_cell_bottom_right.y;
+
+    int current_cell_top_left_arena = arena[current_cell_top_left.y][current_cell_top_left.x];
+    int current_cell_bottom_right_arena = arena[current_cell_bottom_right.y][current_cell_bottom_right.x];
+    int current_cell_top_right_arena = arena[current_cell_top_right.y][current_cell_top_right.x];
+    int current_cell_bottom_left_arena = arena[current_cell_bottom_left.y][current_cell_bottom_left.x];
+
+    printf("current_cell_top_left: (%d, %d) -> %d\n", current_cell_top_left.x, current_cell_top_left.y, current_cell_top_left_arena);
+    printf("current_cell_bottom_right: (%d, %d) -> %d\n", current_cell_bottom_right.x, current_cell_bottom_right.y, current_cell_bottom_right_arena);
+    printf("current_cell_top_right: (%d, %d) -> %d\n", current_cell_top_right.x, current_cell_top_right.y, current_cell_top_right_arena);
+    printf("current_cell_bottom_left: (%d, %d) -> %d\n", current_cell_bottom_left.x, current_cell_bottom_left.y, current_cell_bottom_left_arena);
+
+    printf("\n");
+
+    bool every_inner_corner_in_bomb = (inner_cell_top_left_arena == inner_cell_bottom_right_arena) && (inner_cell_top_right_arena == inner_cell_bottom_left_arena) && (inner_cell_top_right_arena == BOMB || inner_cell_top_right_arena == NEW_BOMB);
+    bool every_outer_corner_in_bomb = (outer_cell_top_left_arena == outer_cell_bottom_right_arena) && (outer_cell_top_right_arena == outer_cell_bottom_left_arena) && (outer_cell_top_right_arena == BOMB || outer_cell_top_right_arena == NEW_BOMB);
+    bool every_inner_part_same_as_outer_part = (inner_cell_top_left_arena == outer_cell_top_left_arena) && (inner_cell_bottom_right_arena == outer_cell_bottom_right_arena) && (inner_cell_top_right_arena == outer_cell_top_right_arena) && (inner_cell_bottom_left_arena == outer_cell_bottom_left_arena);
+    bool every_outer_part_same_as_current_part = (current_cell_top_left_arena == outer_cell_top_left_arena) && (current_cell_bottom_right_arena == outer_cell_bottom_right_arena) && (current_cell_top_right_arena == outer_cell_top_right_arena) && (current_cell_bottom_left_arena == outer_cell_bottom_left_arena);
+    bool every_inner_part_same_as_current_part = (inner_cell_top_left_arena == current_cell_top_left_arena) && (inner_cell_bottom_right_arena == current_cell_bottom_right_arena) && (inner_cell_top_right_arena == current_cell_top_right_arena) && (inner_cell_bottom_left_arena == current_cell_bottom_left_arena);
+    bool outer_valid_side = (outer_cell_top_left_arena == OPENED || outer_cell_top_left_arena == BOMB || outer_cell_top_left_arena == NEW_BOMB) && (outer_cell_bottom_right_arena == OPENED || outer_cell_bottom_right_arena == BOMB || outer_cell_bottom_right_arena == NEW_BOMB) && (outer_cell_top_right_arena == OPENED || outer_cell_top_right_arena == BOMB || outer_cell_top_right_arena == NEW_BOMB) && (outer_cell_bottom_left_arena == OPENED || outer_cell_bottom_left_arena == BOMB || outer_cell_bottom_left_arena == NEW_BOMB);
+
+    printf("every_inner_corner_in_bomb: %d\n", every_inner_corner_in_bomb);
+    printf("every_outer_corner_in_bomb: %d\n", every_outer_corner_in_bomb);
+    printf("every_inner_part_same_as_outer_part: %d\n", every_inner_part_same_as_outer_part);
+    printf("outer_valid_side: %d\n", outer_valid_side);
+
+    if (outer_valid_side && !(every_inner_corner_in_bomb || every_outer_corner_in_bomb || every_inner_part_same_as_outer_part)) {
+        printf("every_inner_part_same_as_outer_part: %d\n", every_inner_part_same_as_outer_part);
+        printf("every_inner_part_same_as_outer_part: %d\n", every_inner_part_same_as_outer_part);
+
+        return every_outer_part_same_as_current_part;
+    }
+    return (every_inner_corner_in_bomb && (outer_valid_side)) || every_outer_corner_in_bomb || every_inner_part_same_as_outer_part;
 }
 
 bool isBombPlantedByPlayer(Coord cell, int playerId) {
@@ -327,7 +399,7 @@ void updateBombTimers(UNUSED int value) {
         }
     }
 
-    glutTimerFunc(TICK, updateBombTimers, 0);
+    //glutTimerFunc(TICK, updateBombTimers, 0);
 }
 
 void setup() {
