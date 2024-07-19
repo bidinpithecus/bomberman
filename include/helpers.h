@@ -15,5 +15,10 @@ bool isPlayerOnOwnBombCell(Player player);
 bool isPlayerAbleToPlantBomb(Player player);
 bool canPlayerWalkThroughBomb(Player player, Coord position);
 bool isBombPlantedByPlayer(Coord cell, int playerId);
+void updateBombTimers(int value);
+void explodeBomb(Bomb* bomb);
+void applyExplosionEffects(Coord affectedCell);
+Bomb* getBombByCell(Coord cell);
+Player* getPlayerById(int id);
 
 #endif
