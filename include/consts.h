@@ -12,7 +12,6 @@
 #define PLAYER_02              6
 #define PLAYER_03              7
 #define PLAYER_04              8
-#define NEW_BOMB               9
 #define NUM_ROWS              15
 #define NUM_COLS              15
 #define MAX_BOMBS             NUM_ROWS * NUM_COLS

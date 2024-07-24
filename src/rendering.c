@@ -38,7 +38,7 @@ void drawArena() {
           glColor3f(0.5f, 0.5f, 0.5f);
       } else if (arena[j][i] == OPENED) {
           glColor3f(0.0f, 0.7f, 0.0f);
-      } else if (arena[j][i] == BOMB || arena[j][i] == NEW_BOMB) {
+      } else if (arena[j][i] == BOMB) {
           glColor3f(0.0f, 0.0f, 0.0f);
       } else {
           glColor3f(0.0f, 1.0f, 1.0f);
@@ -69,7 +69,7 @@ void drawPlayer(Player player) {
 
 void glutStart() {
   glutInit(&argc, argv);
-  //glutTimerFunc(100, updateBombTimers, 0);
+  glutTimerFunc(100, updateBombTimers, 0);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
   glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
   glutCreateWindow("Bomberman");
