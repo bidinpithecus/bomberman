@@ -12,7 +12,7 @@ typedef struct {
   Coord position;
   int numOfBombsToPlant;
   int numOfBombsPlanted;
-  Coord* newBombCoordPtr;
+  Coord *newBombCoordPtr;
   int id;
 } Player;
 

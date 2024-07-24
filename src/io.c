@@ -1,5 +1,5 @@
-#include <GL/glut.h>
 #include "../include/io.h"
+#include <GL/glut.h>
 
 void normalButtons(unsigned char key, UNUSED int x, UNUSED int y) {
   if (key == 'a' || key == 'A') {

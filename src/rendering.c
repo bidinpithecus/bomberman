@@ -1,15 +1,11 @@
 #include "../include/rendering.h"
 
 int argc;
-char** argv;
+char **argv;
 
-void displayInit() {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
+void displayInit() { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
 
-void displayEnd() {
-  glutSwapBuffers();
-}
+void displayEnd() { glutSwapBuffers(); }
 
 void drawScene() {
   drawArena();
@@ -33,21 +29,21 @@ void drawArena() {
       x0 = i * CELL_SIZE;
       y0 = j * CELL_SIZE;
       if (arena[j][i] == UNBREAKABLE_WALL) {
-          glColor3f(0.9f, 0.9f, 0.9f);
+        glColor3f(0.9f, 0.9f, 0.9f);
       } else if (arena[j][i] == BREAKABLE_WALL) {
-          glColor3f(0.5f, 0.5f, 0.5f);
+        glColor3f(0.5f, 0.5f, 0.5f);
       } else if (arena[j][i] == OPENED) {
-          glColor3f(0.0f, 0.7f, 0.0f);
+        glColor3f(0.0f, 0.7f, 0.0f);
       } else if (arena[j][i] == BOMB) {
-          glColor3f(0.0f, 0.0f, 0.0f);
+        glColor3f(0.0f, 0.0f, 0.0f);
       } else {
-          glColor3f(0.0f, 1.0f, 1.0f);
+        glColor3f(0.0f, 1.0f, 1.0f);
       }
       glBegin(GL_QUADS);
-        glVertex2i(x0 + 1, y0 + 1);
-        glVertex2i(x0 + 1, CELL_SIZE + y0 - 1);
-        glVertex2i(CELL_SIZE + x0 - 1, CELL_SIZE + y0 - 1);
-        glVertex2i(CELL_SIZE + x0 - 1, y0 + 1);
+      glVertex2i(x0 + 1, y0 + 1);
+      glVertex2i(x0 + 1, CELL_SIZE + y0 - 1);
+      glVertex2i(CELL_SIZE + x0 - 1, CELL_SIZE + y0 - 1);
+      glVertex2i(CELL_SIZE + x0 - 1, y0 + 1);
       glEnd();
     }
   }
@@ -57,13 +53,17 @@ void drawPlayer(Player player) {
   if (player.id == 1) {
     glColor3f(1.0f, 0.0f, 0.0f);
   } else {
-      glColor3f(0.0f, 0.0f, 1.0f);
+    glColor3f(0.0f, 0.0f, 1.0f);
   }
   glBegin(GL_QUADS);
-    glVertex2i(player.position.x - HALF_PLAYER_SIZE, player.position.y - HALF_PLAYER_SIZE);
-    glVertex2i(player.position.x + HALF_PLAYER_SIZE, player.position.y - HALF_PLAYER_SIZE);
-    glVertex2i(player.position.x + HALF_PLAYER_SIZE, player.position.y + HALF_PLAYER_SIZE);
-    glVertex2i(player.position.x - HALF_PLAYER_SIZE, player.position.y + HALF_PLAYER_SIZE);
+  glVertex2i(player.position.x - HALF_PLAYER_SIZE,
+             player.position.y - HALF_PLAYER_SIZE);
+  glVertex2i(player.position.x + HALF_PLAYER_SIZE,
+             player.position.y - HALF_PLAYER_SIZE);
+  glVertex2i(player.position.x + HALF_PLAYER_SIZE,
+             player.position.y + HALF_PLAYER_SIZE);
+  glVertex2i(player.position.x - HALF_PLAYER_SIZE,
+             player.position.y + HALF_PLAYER_SIZE);
   glEnd();
 }
 
