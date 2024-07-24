@@ -1,14 +1,21 @@
-#ifndef _STRUCTS_H_
-#define _STRUCTS_H_
+#ifndef _STRUCTS_H
+#define _STRUCTS_H
 
 #include <stdbool.h>
 
-typedef struct {
+typedef struct Coord {
   int x;
   int y;
 } Coord;
 
-typedef struct {
+typedef struct Bomb {
+  Coord cell;
+  int timer;
+  int playerId;
+  int radius;
+} Bomb;
+
+typedef struct Player {
   Coord position;
   int numOfBombsToPlant;
   int numOfBombsPlanted;
@@ -16,13 +23,18 @@ typedef struct {
   int id;
 } Player;
 
-typedef struct {
-  Coord cell;
-  int timer;
-  int playerId;
-  int radius;
-} Bomb;
+typedef enum actions {
+  MOVE_LEFT,
+  MOVE_RIGHT,
+  MOVE_UP,
+  MOVE_DOWN,
+  PLANT_BOMB
+} actions;
 
-typedef enum { MOVE_LEFT, MOVE_RIGHT, MOVE_UP, MOVE_DOWN, PLANT_BOMB } actions;
+extern int arena[NUM_ROWS][NUM_COLS];
+extern Bomb bombs[MAX_BOMBS];
+extern int bombCount;
+extern Player player_01;
+extern Player player_02;
 
 #endif

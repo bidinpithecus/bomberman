@@ -1,8 +1,10 @@
 #ifndef _RENDERING_H_
 #define _RENDERING_H_
 
+#include "bomb.h"
 #include "consts.h"
 #include "io.h"
+#include "structs.h"
 #include <GL/glut.h>
 
 void drawArena();

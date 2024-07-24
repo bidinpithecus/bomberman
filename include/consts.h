@@ -1,8 +1,6 @@
 #ifndef _CONSTS_H_
 #define _CONSTS_H_
 
-#include "structs.h"
-
 #define UNUSED __attribute__((unused))
 #define UNBREAKABLE_WALL 0
 #define BREAKABLE_WALL 1
@@ -22,9 +20,5 @@
 #define WINDOW_WIDTH NUM_COLS *CELL_SIZE
 #define WINDOW_HEIGHT NUM_ROWS *CELL_SIZE
 #define TICK 100
-
-extern int arena[NUM_ROWS][NUM_COLS];
-extern Player player_01;
-extern Player player_02;
 
 #endif

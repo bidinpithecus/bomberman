@@ -3,6 +3,8 @@
 
 #include "consts.h"
 #include "helpers.h"
+#include "player.h"
+#include "structs.h"
 
 void normalButtons(unsigned char key, UNUSED int x, UNUSED int y);
 
