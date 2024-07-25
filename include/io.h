@@ -6,6 +6,11 @@
 #include "player.h"
 #include "structs.h"
 
-void normalButtons(unsigned char key, UNUSED int x, UNUSED int y);
+extern bool input_buffer[256];
+
+void handleInput();
+void keyboard(unsigned char key, UNUSED int x, UNUSED int y);
+void keyboardUp(unsigned char key, UNUSED int x, UNUSED int y);
+void idle();
 
 #endif

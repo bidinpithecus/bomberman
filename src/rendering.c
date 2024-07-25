@@ -77,7 +77,9 @@ void glutStart() {
   glutCreateWindow("Bomberman");
   glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
   gluOrtho2D(0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
-  glutKeyboardFunc(normalButtons);
+  glutKeyboardFunc(keyboard);
+  glutKeyboardUpFunc(keyboardUp);
   glutDisplayFunc(display);
+  glutIdleFunc(idle);
   glutMainLoop();
 }

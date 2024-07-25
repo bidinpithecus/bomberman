@@ -1,43 +1,55 @@
 #include "../include/io.h"
 #include <GL/glut.h>
 
-void normalButtons(unsigned char key, UNUSED int x, UNUSED int y) {
-  if (key == 'a' || key == 'A') {
+bool input_buffer[256];
+
+void keyboard(unsigned char key, UNUSED int x, UNUSED int y) {
+  input_buffer[key] = true;
+}
+
+void keyboardUp(unsigned char key, UNUSED int x, UNUSED int y) {
+  input_buffer[key] = false;
+}
+
+void handleInput() {
+  if (input_buffer['a'] || input_buffer['A']) {
     action(&player_01, MOVE_LEFT);
   }
-  if (key == 'd' || key == 'D') {
+  if (input_buffer['d'] || input_buffer['D']) {
     action(&player_01, MOVE_RIGHT);
   }
-  if (key == 'w' || key == 'W') {
+  if (input_buffer['w'] || input_buffer['W']) {
     action(&player_01, MOVE_UP);
   }
-  if (key == 's' || key == 'S') {
+  if (input_buffer['s'] || input_buffer['S']) {
     action(&player_01, MOVE_DOWN);
   }
-  if (key == 27) {
+  if (input_buffer[27]) {
     // ESCAPE key
     exit(0);
   }
-  if (key == 32) {
+  if (input_buffer[32]) {
     // SPACEBAR key
     action(&player_01, PLANT_BOMB);
   }
 
-  if (key == 'j' || key == 'J') {
+  if (input_buffer['j'] || input_buffer['J']) {
     action(&player_02, MOVE_LEFT);
   }
-  if (key == 'l' || key == 'L') {
+  if (input_buffer['l'] || input_buffer['L']) {
     action(&player_02, MOVE_RIGHT);
   }
-  if (key == 'i' || key == 'I') {
+  if (input_buffer['i'] || input_buffer['I']) {
     action(&player_02, MOVE_UP);
   }
-  if (key == 'k' || key == 'K') {
+  if (input_buffer['k'] || input_buffer['K']) {
     action(&player_02, MOVE_DOWN);
   }
-  if (key == 'p' || key == 'P') {
+  if (input_buffer['p'] || input_buffer['P']) {
     action(&player_02, PLANT_BOMB);
   }
 
   glutPostRedisplay();
 }
+
+void idle() { handleInput(); }
