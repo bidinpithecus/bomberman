@@ -14,5 +14,6 @@ bool isPlayerAbleToPlantBomb(Player player);
 bool canPlayerWalk(Player player, Coord position);
 Player *getPlayerById(int id);
 void action(Player *player, actions act);
+bool isAnyCornerOfPlayerInCell(Player player, Coord cell);
 
 #endif

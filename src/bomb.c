@@ -53,7 +53,7 @@ void explodeBomb(Bomb *bomb) {
 
   for (int i = 0; i < coord_count; i++) {
     Coord cell = {explosion_coords[i].x, explosion_coords[i].y};
-    if (cell.x == bomb->cell.x && cell.y == bomb->cell.y) {
+    if (coordEquals(cell, bomb->cell)) {
       arena[cell.y][cell.x] = OPENED;
       Player *player = getPlayerById(bomb->playerId);
 
@@ -61,9 +61,8 @@ void explodeBomb(Bomb *bomb) {
         player->numOfBombsPlanted -= 1;
         player->numOfBombsToPlant += 1;
       }
-    } else {
-      applyExplosionEffects(cell);
     }
+    applyExplosionEffects(cell);
   }
 
   int index = bomb - bombs;
@@ -77,6 +76,13 @@ void explodeBomb(Bomb *bomb) {
 }
 
 void applyExplosionEffects(Coord affectedCell) {
+  if (isAnyCornerOfPlayerInCell(player_01, affectedCell)) {
+    player_01.life -= 1;
+  }
+  if (isAnyCornerOfPlayerInCell(player_02, affectedCell)) {
+    player_02.life -= 1;
+  }
+
   if (arena[affectedCell.y][affectedCell.x] == BREAKABLE_WALL) {
     arena[affectedCell.y][affectedCell.x] = OPENED;
   } else if (arena[affectedCell.y][affectedCell.x] == BOMB) {

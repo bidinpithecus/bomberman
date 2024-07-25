@@ -21,6 +21,7 @@ typedef struct Player {
   int numOfBombsPlanted;
   Coord *newBombCoordPtr;
   int id;
+  int life;
 } Player;
 
 typedef enum actions {

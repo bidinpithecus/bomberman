@@ -6,5 +6,6 @@
 #include <stdbool.h>
 
 bool isPositionAnOpenCell(Coord position);
+bool coordEquals(Coord coord_1, Coord coord_2);
 
 #endif

@@ -50,21 +50,23 @@ void drawArena() {
 }
 
 void drawPlayer(Player player) {
-  if (player.id == 1) {
-    glColor3f(1.0f, 0.0f, 0.0f);
-  } else {
-    glColor3f(0.0f, 0.0f, 1.0f);
+  if (player.life > 0) {
+    if (player.id == 1) {
+      glColor3f(1.0f, 0.0f, 0.0f);
+    } else if (player.id == 2) {
+      glColor3f(0.0f, 0.0f, 1.0f);
+    }
+    glBegin(GL_QUADS);
+    glVertex2i(player.position.x - HALF_PLAYER_SIZE,
+               player.position.y - HALF_PLAYER_SIZE);
+    glVertex2i(player.position.x + HALF_PLAYER_SIZE,
+               player.position.y - HALF_PLAYER_SIZE);
+    glVertex2i(player.position.x + HALF_PLAYER_SIZE,
+               player.position.y + HALF_PLAYER_SIZE);
+    glVertex2i(player.position.x - HALF_PLAYER_SIZE,
+               player.position.y + HALF_PLAYER_SIZE);
+    glEnd();
   }
-  glBegin(GL_QUADS);
-  glVertex2i(player.position.x - HALF_PLAYER_SIZE,
-             player.position.y - HALF_PLAYER_SIZE);
-  glVertex2i(player.position.x + HALF_PLAYER_SIZE,
-             player.position.y - HALF_PLAYER_SIZE);
-  glVertex2i(player.position.x + HALF_PLAYER_SIZE,
-             player.position.y + HALF_PLAYER_SIZE);
-  glVertex2i(player.position.x - HALF_PLAYER_SIZE,
-             player.position.y + HALF_PLAYER_SIZE);
-  glEnd();
 }
 
 void glutStart() {

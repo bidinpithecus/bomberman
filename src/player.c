@@ -10,6 +10,7 @@ void start_player_01() {
   player_01.numOfBombsToPlant = 1;
   player_01.id = 1;
   player_01.newBombCoordPtr = NULL;
+  player_01.life = 1;
 }
 
 void start_player_02() {
@@ -19,6 +20,7 @@ void start_player_02() {
   player_02.numOfBombsToPlant = 1;
   player_02.id = 2;
   player_02.newBombCoordPtr = NULL;
+  player_02.life = 1;
 }
 
 Bomb plant_bomb(Player *player) {
@@ -54,7 +56,8 @@ Player *getPlayerById(int id) {
 }
 
 bool isPlayerAbleToPlantBomb(Player player) {
-  if (isPositionAnOpenCell(player.position) && player.numOfBombsToPlant > 0) {
+  if (player.life > 0 && isPositionAnOpenCell(player.position) &&
+      player.numOfBombsToPlant > 0) {
     return true;
   }
 
@@ -62,6 +65,10 @@ bool isPlayerAbleToPlantBomb(Player player) {
 }
 
 bool canPlayerWalk(Player player, Coord new_position) {
+  if (player.life <= 0) {
+    return false;
+  }
+
   int offset = 1;
   Coord outer_cell_top_left;
   outer_cell_top_left.x = (new_position.x - (int)HALF_PLAYER_SIZE) / CELL_SIZE;
@@ -271,4 +278,23 @@ void action(Player *player, actions act) {
 
     player->position = new_position;
   }
+}
+
+bool isAnyCornerOfPlayerInCell(Player player, Coord cell) {
+  int offset = 1;
+  Coord cell_top_left = {
+      (player.position.x - (int)HALF_PLAYER_SIZE) / CELL_SIZE,
+      (player.position.y - (int)HALF_PLAYER_SIZE) / CELL_SIZE};
+
+  Coord cell_bottom_right = {
+      (player.position.x - offset + (int)HALF_PLAYER_SIZE) / CELL_SIZE,
+      (player.position.y - offset + (int)HALF_PLAYER_SIZE) / CELL_SIZE};
+
+  Coord cell_top_right = {cell_bottom_right.x, cell_top_left.y};
+  Coord cell_bottom_left = {cell_top_left.x, cell_bottom_right.y};
+
+  return coordEquals(cell, cell_top_left) ||
+         coordEquals(cell, cell_bottom_right) ||
+         coordEquals(cell, cell_top_right) ||
+         coordEquals(cell, cell_bottom_left);
 }

@@ -26,3 +26,7 @@ bool isPositionAnOpenCell(Coord position) {
           arena[cell_bottom_left.y][cell_bottom_left.x]) &&
          (arena[cell_bottom_right.y][cell_bottom_right.x] == OPENED);
 }
+
+bool coordEquals(Coord coord_1, Coord coord_2) {
+  return coord_1.x == coord_2.x && coord_1.y == coord_2.y;
+}
